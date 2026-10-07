@@ -1,0 +1,12 @@
+ Problems: 0/1 Knapsack using BnB,
+Traveling Salesman Problem (TSP)
+N-Queens II: Find the number of distinct solutions to the N-Queens problem,
+rather than all the solutions.
+Graph Coloring, Hamiltonian Cycle
+N-Queens: Place N queens on an N×N board so they don't attack each other.
+0/1 Knapsack Problem: Maximize value without exceeding weight capacity.
+ Longest Common Subsequence: Find the length of the longest common
+subsequence.
+Climbing Stairs: 
+Fibonacci Number:
+Matrix Chain Multiplication
