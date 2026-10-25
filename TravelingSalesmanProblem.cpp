@@ -1,66 +1,118 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
-
-// Traveling Salesman Problem (TSP) using backtracking.
-// We start from city 0 and try to visit every other city exactly once,
-// then return to the starting city to complete the tour.
-
-// dfs() explores all possible routes from the current city.
-// cost[i][j] stores the travel cost between city i and city j.
-// vis[] keeps track of cities already visited.
-// last is the current city, and cnt is the number of cities visited so far.
-int dfs(vector<vector<int>>& cost, vector<bool>& vis, int last, int cnt) {
-    int n = cost.size();
-
-    // If all cities have been visited, return to the starting city (city 0).
-    if (cnt == n)
-        return cost[last][0];
-
-    int minCost = (int)1e9;
-
-    // Try every unvisited city as the next destination.
-    for (int city = 1; city < n; city++) {
-        if (!vis[city]) {
-            // Visit this city and recursively find the cheapest route from there.
-            vis[city] = true;
-            minCost = min(minCost, cost[last][city] +
-                                   dfs(cost, vis, city, cnt + 1));
-
-            // Backtrack so that other routes can be explored.
-            vis[city] = false;
+ 
+const int INF = 1000000000;
+ 
+struct Node {
+    vector<vector<int>> mat;  
+    vector<int> path;       
+    int cost;     
+    int city;            
+    int level;  
+};
+ struct Compare {
+    bool operator()(const Node &a, const Node &b) {
+        return a.cost > b.cost;
+    }
+};
+ 
+int reduceMatrix(vector<vector<int>> &mat, int n) {
+    int total = 0;
+ 
+    for (int i = 0; i < n; i++) { 
+        int rowMin = INF;
+        for (int j = 0; j < n; j++) rowMin = min(rowMin, mat[i][j]);
+        if (rowMin != INF && rowMin > 0) {
+            for (int j = 0; j < n; j++)
+                if (mat[i][j] != INF) mat[i][j] -= rowMin;
+            total += rowMin;
         }
     }
-
-    // Return the minimum cost among all valid tours from the current state.
-    return minCost;
+ 
+    for (int j = 0; j < n; j++) {  
+        int colMin = INF;
+        for (int i = 0; i < n; i++) colMin = min(colMin, mat[i][j]);
+        if (colMin != INF && colMin > 0) {
+            for (int i = 0; i < n; i++)
+                if (mat[i][j] != INF) mat[i][j] -= colMin;
+            total += colMin;
+        }
+    }
+    return total;
 }
-
-// tsp() initializes the starting conditions for the tour.
-// city 0 is fixed as the starting city and is marked as visited.
-int tsp(vector<vector<int>>& cost) {
-    int n = cost.size();
-
-    // vis[0] = true means we begin from city 0 and do not revisit it.
-    vector<bool> vis(n, false);
-    vis[0] = true;
-
-    return dfs(cost, vis, 0, 1);
+ 
+int tspBnB(vector<vector<int>> &cost, int n, vector<int> &bestPath,
+           int &nodesCreated) {
+    priority_queue<Node, vector<Node>, Compare> pq;
+ 
+    Node root;
+    root.mat = cost;
+    root.path = {0};
+    root.city = 0;
+    root.level = 1;
+    root.cost = reduceMatrix(root.mat, n);
+    pq.push(root);
+    nodesCreated = 1;
+ 
+    while (!pq.empty()) {
+        Node u = pq.top();    
+        pq.pop();
+ 
+        if (u.level == n) {    
+            bestPath = u.path;
+            return u.cost; 
+        }
+ 
+        for (int next = 0; next < n; next++) {
+            if (u.mat[u.city][next] == INF) continue;
+ 
+            Node child;
+            child.mat = u.mat;
+            child.path = u.path;
+            child.path.push_back(next);
+            child.city = next;
+            child.level = u.level + 1;
+ 
+            for (int k = 0; k < n; k++) {
+                child.mat[u.city][k] = INF;
+                child.mat[k][next] = INF;
+            }
+            child.mat[next][0] = INF;
+ 
+            child.cost = u.cost + u.mat[u.city][next]
+                         + reduceMatrix(child.mat, n);
+ 
+            pq.push(child);
+            nodesCreated++;
+        }
+    }
+    return -1;
 }
-
+ 
 int main() {
-    // Example cost matrix for the TSP.
-    // cost[i][j] is the cost to travel from city i to city j.
-    vector<vector<int>> cost = {
-        {0, 10, 15, 20},
-        {10, 0, 35, 25},
-        {15, 35, 0, 30},
-        {20, 25, 30, 0}
-    };
-
-    // Compute and print the minimum possible tour cost.
-    int res = tsp(cost);
-    cout << res;
+    int n;
+    cout << "Enter number of cities: ";
+    cin >> n;
+ 
+    vector<vector<int>> cost(n, vector<int>(n));
+    cout << "Enter the " << n << "x" << n
+         << " cost matrix (diagonal is ignored):\n";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cin >> cost[i][j];
+            if (i == j) cost[i][j] = INF;
+        }
+    }
+ 
+    vector<int> bestPath;
+    int nodesCreated = 0;
+    int best = tspBnB(cost, n, bestPath, nodesCreated);
+ 
+    cout << "Minimum tour cost: " << best << endl;
+    cout << "Tour: ";
+    for (int city : bestPath) cout << city << " -> ";
+    cout << bestPath[0] << endl;
+    cout << "State space nodes created: " << nodesCreated << endl;
+ 
     return 0;
 }

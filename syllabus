@@ -1,0 +1,23 @@
+Trees and Graphs
+•	Tree traversal techniques (DFS, BFS)
+•	Graph traversal algorithms (BFS, DFS)
+•	Lowest Common Ancestor: Find LCA of two nodes in a binary tree.
+•	•Detect Cycle in Undirected Graph: Check if there's a cycle in an undirected
+graph.
+Heaps and Priority Queues
+•	Kth Largest Element: Find the kth largest element in an array.
+•	Top K Frequent Elements: Return the k most frequent elements.
+Hashing
+•	Two Sum: Find two numbers that add up to a given target.
+Dynamic Programming
+•	Climbing Stairs
+•	Fibonacci Number:
+•	Longest Common Subsequence:
+Backtracking
+•	N-Queens: 
+•	Subset Sum
+•   Graph coloring (backtracking)
+
+Branch-Bound
+•	0/1 Knapsack using BnB, 
+•	Traveling Salesman Problem (TSP)
