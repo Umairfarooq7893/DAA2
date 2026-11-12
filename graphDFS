@@ -1,6 +1,4 @@
-
-#include <iostream>
-#include <vector>
+#include<bits/stdc++.h>
 using namespace std;
 
 void DFS(int node, vector<int> adj[], vector<bool>& visited) {

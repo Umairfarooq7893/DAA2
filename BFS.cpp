@@ -1,7 +1,6 @@
 #include <iostream>
 #include <queue>
 using namespace std;
-
 struct Node {
     int data;
     Node *left, *right;
@@ -13,7 +12,7 @@ struct Node {
 };
 
 void BFS(Node* root) {
-    if (root == nullptr)
+    if (root == NULL)
         return;
 
     queue<Node*> q;
@@ -25,7 +24,7 @@ void BFS(Node* root) {
 
         cout << current->data << " ";
 
-        if (current->left != nullptr)
+        if (current->left != NULL)
             q.push(current->left);
 
         if (current->right != nullptr)

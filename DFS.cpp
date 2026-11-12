@@ -19,7 +19,6 @@ void DFS(Node* root) {
     DFS(root->left);            // Go left
     DFS(root->right);           // Go right
 }
-
 int main() {
     Node* root = new Node(1);
     root->left = new Node(2);
@@ -29,6 +28,5 @@ int main() {
 
     cout << "DFS: ";
     DFS(root);
-
     return 0;
 }

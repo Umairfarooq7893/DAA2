@@ -1,26 +1,34 @@
-
 #include <bits/stdc++.h>
 using namespace std;
  
 bool subsetSum(vector<int> &arr, int index, int remaining) {
-    if (remaining == 0) return true;                       // found a valid subset
-    if (index == arr.size() || remaining < 0) return false; // prune
+    // If the remaining sum becomes zero,
+    // we have successfully found a subset.
+    if (remaining == 0)
+        return true; 
+
+    // index == arr.size() means we have checked all elements.
+    // remaining < 0 means we exceeded the target
+    if (index == arr.size() || remaining < 0) 
+        return false;
  
     // choice 1: include arr[index]
-    if (subsetSum(arr, index + 1, remaining - arr[index])) return true;
+    if (subsetSum(arr, index + 1, remaining - arr[index])) 
+        return true;
  
     // choice 2: exclude arr[index]
     return subsetSum(arr, index + 1, remaining);
 }
  
-int main() {
+int main() { 
     int n;
     cout << "Enter number of elements: ";
     cin >> n;
  
     vector<int> arr(n);
     cout << "Enter " << n << " elements: ";
-    for (int i = 0; i < n; i++) cin >> arr[i];
+    for (int i = 0; i < n; i++)
+        cin >> arr[i];
  
     int target;
     cout << "Enter target sum: ";

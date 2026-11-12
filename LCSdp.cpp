@@ -1,22 +1,14 @@
-#include <iostream>
-#include <vector>
-#include <string>
+#include <bits/stdc++.h>
 using namespace std;
 
 int main() {
 
-    // Declare two strings to store the input sequences
     string X, Y;
-
-    // Ask the user to enter the first string
     cout << "Enter first string: ";
     cin >> X;
-
-    // Ask the user to enter the second string
     cout << "Enter second string: ";
     cin >> Y;
 
-    // Store the length of the first and second strings
     int m = X.length();
     int n = Y.length();
 
@@ -26,10 +18,8 @@ int main() {
     // Initially, all values are 0
     vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0));
 
-    // Traverse through each character of string X
+    // Traverse through each character of string 
     for (int i = 1; i <= m; i++) {
-
-        // Traverse through each character of string Y
         for (int j = 1; j <= n; j++) {
 
             // If the current characters of both strings are same
@@ -40,17 +30,12 @@ int main() {
                 dp[i][j] = dp[i - 1][j - 1] + 1;
 
             else
-
-                // If characters are different,
                 // choose the maximum LCS by either:
                 // 1. Removing current character from X -> dp[i-1][j]
                 // 2. Removing current character from Y -> dp[i][j-1]
                 dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
         }
     }
-
-    // dp[m][n] contains the length of the LCS
-    // of the complete strings X and Y
     cout << "Length of LCS = " << dp[m][n] << endl;
 
     return 0;
